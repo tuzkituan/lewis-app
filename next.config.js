@@ -1,7 +1,11 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
-}
+const path = require('path')
 
-module.exports = nextConfig
+module.exports = {
+  webpack: function (config, options) {
+    config.experiments = {};
+    return config;
+  },
+  sassOptions: {
+    includePaths: [path.join(__dirname, 'styles')],
+  },
+}
