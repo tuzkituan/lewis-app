@@ -26,13 +26,13 @@ const LoadedImages: FC<Props> = ({ data, loading }) => {
 
   const [selectedId, setSelectedId] = useState('');
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
+  const [perPage, setPerPage] = useState(15);
   const router = useRouter();
 
   useEffect(() => {
     const pushRouter = (renderQuery: any) => {
       return router.push({
-        pathname: '/',
+        pathname: '/pexels',
         query: {
           ...router.query,
           ...renderQuery,
@@ -56,13 +56,13 @@ const LoadedImages: FC<Props> = ({ data, loading }) => {
 
   return (
     <Container
-      backgroundColor="componentBackgroundColor"
+      // backgroundColor="componentBackgroundColor"
       borderRadius={5}
-      minW="65vw"
-      padding={4}
+      minW="100vw"
+      padding={2}
     >
       <Skeleton isLoaded={!loading} fadeDuration={2}>
-        <SimpleGrid columns={5} spacing={4}>
+        <SimpleGrid columns={5} spacing={2}>
           {(photos as unknown as any[]).map((item, index) => {
             return (
               <Box key={index}>
@@ -80,11 +80,13 @@ const LoadedImages: FC<Props> = ({ data, loading }) => {
             );
           })}
         </SimpleGrid>
-        <Flex gap={2}>
-          {page > 1 && <Button onClick={() => setPage(page - 1)}>PREV</Button>}
-          <Button onClick={() => setPage(page + 1)}>NEXT</Button>
-        </Flex>
       </Skeleton>
+      <Flex gap={2} paddingTop={3} justifyContent="right">
+        {page > 1 && <Button onClick={() => setPage(page - 1)}>PREV</Button>}
+        <Button onClick={() => setPage(page + 1)} colorScheme="teal">
+          NEXT
+        </Button>
+      </Flex>
       <ViewImageModal
         item={photos.find((x: any) => x.id === selectedId)}
         onClose={() => setSelectedId('')}

@@ -2,8 +2,8 @@
 import { extendTheme } from '@chakra-ui/react'
 
 // Global style overrides
-import styles from './styles'
 import colors from './colors'
+import styles from './styles'
 
 // Foundational style overrides
 // import borders from './foundations/borders'
@@ -24,6 +24,10 @@ const overrides = {
     heading: `'Noto Sans', sans-serif`,
     body: `'Noto Sans', sans-serif`,
   },
+  config: {
+    initialColorMode: 'light',
+    useSystemColorMode: false,
+  }
 }
 
 export default extendTheme(overrides)

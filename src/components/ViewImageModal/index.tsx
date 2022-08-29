@@ -16,6 +16,7 @@ import { FC, useEffect } from 'react';
 interface Props {
   item: {
     alt: '';
+    photographer: '';
     src: {
       original: '';
     };
@@ -49,7 +50,10 @@ const ViewImageModal: FC<Props> = ({ item, onClose }) => {
         <ModalHeader>{item.alt}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Image src={item.src?.original} alt={item.alt}></Image>
+          <Text>
+            Photographer: <b>{item.photographer}</b>
+          </Text>
+          <Image marginTop={4} src={item.src?.original} alt={item.alt}></Image>
         </ModalBody>
         <ModalFooter gap={4}>
           <Button colorScheme="red">Download</Button>

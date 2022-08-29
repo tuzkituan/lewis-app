@@ -1,96 +1,158 @@
-import { SearchIcon } from '@chakra-ui/icons';
+import {
+  BellIcon,
+  CalendarIcon,
+  EmailIcon,
+  MoonIcon,
+  SearchIcon,
+  SunIcon,
+} from '@chakra-ui/icons';
 import {
   Avatar,
   AvatarBadge,
   Button,
   Center,
   Flex,
+  IconButton,
   Image,
   Input,
   InputGroup,
   InputLeftAddon,
   Menu,
   MenuButton,
-  MenuCommand,
   MenuItem,
   MenuList,
-  Select,
   Spacer,
   Text,
+  useColorMode,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { APP_NAME } from '../../constants';
+
 const NavigationBar: FC = () => {
+  const { colorMode, toggleColorMode } = useColorMode();
+  const isDarkMode = colorMode === 'dark';
+
   const router = useRouter();
+
+  const pushRouter = (renderQuery: any) => {
+    return router.push({
+      pathname: '/pexels',
+      query: {
+        ...router.query,
+        ...renderQuery,
+      },
+    });
+  };
 
   const onSearch = (e: any) => {
     if (e.key === 'Enter') {
-      router.push(`/?search=` + e.target.value);
+      pushRouter({
+        search: e.target.value,
+      });
     }
   };
 
   return (
     <Flex
-      backgroundColor="componentBackgroundColor"
       paddingBlock={1.5}
       paddingInline={4}
-      borderBottomColor="primaryBorderColor"
       borderBottomWidth={1}
       gap={4}
       as="header"
       position="fixed"
       w="100%"
+      zIndex={1000}
       top={0}
+      backgroundColor={
+        isDarkMode ? 'componentBgColorDark' : 'componentBgColorLight'
+      }
     >
-      <Center>
-        <Image boxSize="32px" objectFit="cover" src="/images/logo.jpg" alt="" />
-      </Center>
-      <Center>
-        <Text fontWeight={500} fontSize="16px" letterSpacing={1}>
+      <Center onClick={() => router.push('/')} cursor="pointer">
+        <Image
+          boxSize="32px"
+          objectFit="cover"
+          src="/images/reddit.png"
+          alt=""
+        />
+        <Text
+          fontWeight={500}
+          fontSize="16px"
+          letterSpacing={1}
+          paddingLeft={2}
+        >
           {APP_NAME}
         </Text>
       </Center>
-      <Spacer />
+      <Center>
+        <Button onClick={() => router.push('/pexels')} border="none" bg="none">
+          Wallpapers
+        </Button>
+      </Center>
+      <Center>
+        <InputGroup variant="filled">
+          <Input placeholder="Search Wallpapers..." onKeyDown={onSearch} />
+        </InputGroup>
+      </Center>
       <Center flex={1}>
-        <InputGroup
-          size="lg"
-          borderColor="primaryBorderColor"
-          variant="filled"
-          height="38px"
-        >
+        <InputGroup variant="filled">
           <InputLeftAddon>
             <SearchIcon />
           </InputLeftAddon>
-          <Input placeholder="Search Pexels..." onKeyDown={onSearch} />
+          <Input placeholder="Search..." onKeyDown={onSearch} />
         </InputGroup>
       </Center>
 
-      <Spacer />
+      <Center>
+        <IconButton
+          aria-label=""
+          onClick={toggleColorMode}
+          icon={<CalendarIcon />}
+        />
+      </Center>
+      <Center>
+        <IconButton
+          aria-label=""
+          onClick={toggleColorMode}
+          icon={<BellIcon />}
+        />
+      </Center>
+      <Center>
+        <IconButton
+          aria-label=""
+          onClick={toggleColorMode}
+          icon={<EmailIcon />}
+        />
+      </Center>
+      <Center>
+        <IconButton
+          aria-label="Toggle theme"
+          onClick={toggleColorMode}
+          icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+        />
+      </Center>
+      <Center>
+        <Button onClick={() => router.push('/')}>Blog</Button>
+      </Center>
+
       <Center>
         <Menu>
-          <MenuButton
-            height="38px"
-            as={Button}
-            borderWidth={0}
-            backgroundColor="componentBackgroundColor"
-          >
+          <MenuButton as={Button} borderWidth={0}>
             <Flex alignItems="center">
               <Avatar
                 boxSize="28px"
                 name="Lewis Nguyen"
                 src="https://bit.ly/dan-abramov"
-                borderColor="primaryBorderColor"
               >
-                <AvatarBadge
-                  bg="green"
-                  borderColor="papayawhip"
-                  boxSize="0.75em"
-                />
+                <AvatarBadge bg="green" boxSize="0.75em" />
               </Avatar>
             </Flex>
           </MenuButton>
-          <MenuList backgroundColor="componentBackgroundColor">
+          <MenuList
+            bgColor={
+              isDarkMode ? 'componentBgColorDark' : 'componentBgColorLight'
+            }
+          >
             <MenuItem>Download</MenuItem>
             <MenuItem>Create a Copy</MenuItem>
             <MenuItem>Mark as Draft</MenuItem>

@@ -5,10 +5,16 @@ const getServerSideProps: GetServerSideProps = async ({
   params = {},
   query,
 }) => {
-  const { page = 1, per_page = 12, search = '' } = query;
+  const { page = 1, per_page = 15, search = '' } = query;
 
   let data = {};
-  let queryString = BASE_URL_API + search;
+  let queryString = BASE_URL_API;
+  if (search) {
+    queryString = queryString + 'search?query=' + search
+   } else  {
+    queryString = queryString + 'curated?'
+    
+   }
   if (per_page) queryString = queryString + `&per_page=${per_page}`;
   if (page) queryString = queryString + `&page=${page}`;
 
