@@ -24,6 +24,7 @@ import {
   Spacer,
   Text,
   useColorMode,
+  useToast,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
@@ -32,8 +33,19 @@ import { APP_NAME } from '../../constants';
 const NavigationBar: FC = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const isDarkMode = colorMode === 'dark';
-
   const router = useRouter();
+  const toast = useToast();
+
+  const showToast = (content: any, status: any) => {
+    toast({
+      title: 'You clicked here.',
+      description: content,
+      status,
+      duration: 9000,
+      isClosable: true,
+      position: 'bottom-right',
+    });
+  };
 
   const pushRouter = (renderQuery: any) => {
     return router.push({
@@ -106,21 +118,21 @@ const NavigationBar: FC = () => {
       <Center>
         <IconButton
           aria-label=""
-          onClick={toggleColorMode}
+          onClick={() => showToast('Calendar', 'success')}
           icon={<CalendarIcon />}
         />
       </Center>
       <Center>
         <IconButton
           aria-label=""
-          onClick={toggleColorMode}
+          onClick={() => showToast('Notifications', 'error')}
           icon={<BellIcon />}
         />
       </Center>
       <Center>
         <IconButton
           aria-label=""
-          onClick={toggleColorMode}
+          onClick={() => showToast('Emails', 'info')}
           icon={<EmailIcon />}
         />
       </Center>
