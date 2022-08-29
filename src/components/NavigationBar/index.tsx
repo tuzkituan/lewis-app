@@ -1,3 +1,4 @@
+import { SearchIcon } from '@chakra-ui/icons';
 import {
   Avatar,
   AvatarBadge,
@@ -5,27 +6,30 @@ import {
   Center,
   Flex,
   Image,
+  Input,
+  InputGroup,
+  InputLeftAddon,
   Menu,
   MenuButton,
+  MenuCommand,
   MenuItem,
   MenuList,
   Select,
-  Stack,
+  Spacer,
   Text,
-  Wrap,
-  WrapItem,
 } from '@chakra-ui/react';
-import { APP_NAME } from '../../constants';
+import { useRouter } from 'next/router';
 import { FC } from 'react';
-import {
-  CalendarIcon,
-  ChatIcon,
-  ExternalLinkIcon,
-  InfoIcon,
-  SearchIcon,
-  UpDownIcon,
-} from '@chakra-ui/icons';
+import { APP_NAME } from '../../constants';
 const NavigationBar: FC = () => {
+  const router = useRouter();
+
+  const onSearch = (e: any) => {
+    if (e.key === 'Enter') {
+      router.push(`/?search=` + e.target.value);
+    }
+  };
+
   return (
     <Flex
       backgroundColor="componentBackgroundColor"
@@ -37,55 +41,40 @@ const NavigationBar: FC = () => {
       as="header"
       position="fixed"
       w="100%"
+      top={0}
     >
       <Center>
-        <Image boxSize="32px" objectFit="cover" src="/images/logo.png" alt="" />
+        <Image boxSize="32px" objectFit="cover" src="/images/logo.jpg" alt="" />
       </Center>
       <Center>
         <Text fontWeight={500} fontSize="16px" letterSpacing={1}>
           {APP_NAME}
         </Text>
       </Center>
-      <Center w="18%">
-        <Select
-          borderColor="primaryBorderColor"
-          placeholder="Popular"
-          size="lg"
-          height="38px"
-        />
-      </Center>
+      <Spacer />
       <Center flex={1}>
-        <Select
-          borderColor="primaryBorderColor"
-          placeholder="Search Reddit"
+        <InputGroup
           size="lg"
-          icon={<SearchIcon />}
+          borderColor="primaryBorderColor"
+          variant="filled"
           height="38px"
-          backgroundColor="placeholderBgColor"
-        />
+        >
+          <InputLeftAddon>
+            <SearchIcon />
+          </InputLeftAddon>
+          <Input placeholder="Search Pexels..." onKeyDown={onSearch} />
+        </InputGroup>
       </Center>
-      <Center>
-        <Wrap spacing={6}>
-          <WrapItem>
-            <ExternalLinkIcon boxSize={6} />
-          </WrapItem>
-          <WrapItem>
-            <UpDownIcon boxSize={6} />
-          </WrapItem>
-          <WrapItem>
-            <CalendarIcon boxSize={6} />
-          </WrapItem>
-          <WrapItem>
-            <ChatIcon boxSize={6} />
-          </WrapItem>
-          <WrapItem>
-            <InfoIcon boxSize={6} />
-          </WrapItem>
-        </Wrap>
-      </Center>
+
+      <Spacer />
       <Center>
         <Menu>
-          <MenuButton height="38px" as={Button} borderWidth={0}>
+          <MenuButton
+            height="38px"
+            as={Button}
+            borderWidth={0}
+            backgroundColor="componentBackgroundColor"
+          >
             <Flex alignItems="center">
               <Avatar
                 boxSize="28px"
@@ -99,10 +88,6 @@ const NavigationBar: FC = () => {
                   boxSize="0.75em"
                 />
               </Avatar>
-              {/* <Stack spacing={3}>
-                <Text>Lewis Nguyen</Text>
-                <Text>Developer</Text>
-              </Stack> */}
             </Flex>
           </MenuButton>
           <MenuList backgroundColor="componentBackgroundColor">

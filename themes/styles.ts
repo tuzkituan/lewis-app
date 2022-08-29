@@ -2,6 +2,9 @@
 
 const styles = {
   global: {
+    html: {
+      fontSize: '13px'
+    }, 
     // styles for the `body`
     body: {
       bg: 'mainBackgroundColor',

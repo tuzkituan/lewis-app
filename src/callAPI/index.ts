@@ -1,1 +1,1 @@
-export { default as APIHome } from './home';
+export { default as homeAPI } from './home';

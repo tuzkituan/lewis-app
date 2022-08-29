@@ -1,4 +1,5 @@
 const colors = {
+    primaryColor: 'red',
     primaryBorderColor: '#cccccc',
     placeholderBgColor: '#f6f7f8',
     componentBackgroundColor: '#fff',

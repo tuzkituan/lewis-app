@@ -19,7 +19,11 @@ const overrides = {
   },
 
   // color variables
-  colors
+  colors,
+  fonts: {
+    heading: `'Noto Sans', sans-serif`,
+    body: `'Noto Sans', sans-serif`,
+  },
 }
 
 export default extendTheme(overrides)
