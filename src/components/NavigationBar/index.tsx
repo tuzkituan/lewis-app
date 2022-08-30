@@ -129,7 +129,12 @@ const NavigationBar: FC = () => {
       </Center>
 
       <Center w="15vw">
-        <Select icon={<RepeatIcon />} value="Trending" fontWeight={500}>
+        <Select
+          icon={<RepeatIcon />}
+          value="Trending"
+          fontWeight={500}
+          isReadOnly
+        >
           <option value="Popular">Popular</option>
           <option value="Hot">Hot</option>
           <option value="Trending">Trending</option>
