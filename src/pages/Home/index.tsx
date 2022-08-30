@@ -23,14 +23,36 @@ const Home: NextPage = () => {
         <title>Reddit</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Container borderRadius={5} minW="60vw" padding={4}>
-        <Flex gap={4}>
-          <Flex w="66%" gap={4} direction="column">
+      <Container
+        borderRadius={5}
+        minW={{
+          sm: '80vw',
+          md: '80vw',
+          lg: '70vw',
+          xl: '55vw',
+        }}
+        padding={4}
+      >
+        <Flex
+          gap={4}
+          direction={{
+            sm: 'column',
+            xl: 'row',
+          }}
+        >
+          <Flex
+            gap={4}
+            direction="column"
+            w={{
+              sm: '100%',
+              xl: '66%',
+            }}
+          >
             <CreatePost />
             <FilterBar />
             <Posts />
           </Flex>
-          <Flex w="34%" gap={4} direction="column">
+          <Flex gap={4} direction="column" flex={1}>
             <TopCommunities />
             <Premium />
             <CreateFrontPage />

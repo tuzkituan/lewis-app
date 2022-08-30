@@ -76,7 +76,7 @@ const TopCommunities: FC = () => {
                 <Text>{i + 1}</Text>
               </Center>
               <Center>
-                <ChevronUpIcon color="green" />
+                <ChevronUpIcon color="green" boxSize={7} />
               </Center>
               <Center
                 flex={1}

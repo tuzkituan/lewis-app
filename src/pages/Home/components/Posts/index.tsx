@@ -30,14 +30,31 @@ const posts = [
     EDIT: bonus article from a couple while back https://vnexpress.net/su-menh-giai-cuu-tuyet-mat-o-nha-may-azovstal-4479426.html`,
     image: '',
     comments: 36,
+    votes: 17,
+    upvoted: true,
+  },
+  {
+    id: 3,
+    title:
+      'Coming from Linux, I decided to rice it up a bit to feel like home :)',
+    community: 'r/windowsporn',
+    icon: 'https://styles.redditmedia.com/t5_36405/styles/communityIcon_qe01pxf5dvq71.jpg?format=pjpg&s=a54a88802d5202e52a028c037452fec620c40fbc',
+    author: 'u/an0nn3342',
+    tags: [],
+    time: '8 hours ago',
+    content: '',
+    image:
+      'https://preview.redd.it/ah5xwtxmxok91.png?width=640&crop=smart&auto=webp&s=2686c67d6371d6164890fe838a2c73821d3e2c85',
+    comments: 1,
     votes: 5,
+    downvoted: true,
   },
 ];
 
 const Posts: FC = () => {
   return (
     <Flex gap={4} w="100%" direction="column">
-      {[...posts, ...posts, ...posts].map((x: any) => (
+      {posts.map((x: any) => (
         <Post key={x.id} item={x} />
       ))}
     </Flex>

@@ -1,8 +1,9 @@
 import {
   BellIcon,
   CalendarIcon,
-  EmailIcon,
+  ChatIcon,
   MoonIcon,
+  RepeatIcon,
   SearchIcon,
   SunIcon,
 } from '@chakra-ui/icons';
@@ -21,48 +22,77 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  Spacer,
+  Select,
   Text,
   useColorMode,
-  useToast,
+  useDisclosure,
 } from '@chakra-ui/react';
+import UserProfileModal from 'components/UserProfileModal';
+import { login, logout, selectUser } from 'features/userSlice';
+import { signInWithPopup } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { auth, provider } from 'services/firebase';
+import { useToastHook } from 'utils/notification';
 import { APP_NAME } from '../../constants';
 
 const NavigationBar: FC = () => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const {
+    isOpen: isUserProfileModalOpen,
+    onOpen: onUserProfileModalOpen,
+    onClose: onUserProfileModalClose,
+  } = useDisclosure();
+
   const isDarkMode = colorMode === 'dark';
   const router = useRouter();
-  const toast = useToast();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const [toast, newToast] = useToastHook();
+
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then((res) => {
+        dispatch(
+          login({
+            email: res.user.email,
+            uid: res.user.uid,
+            displayName: res.user.displayName,
+            photoURL: res.user.photoURL,
+          })
+        );
+        newToast({
+          title: 'Logged in successfully.',
+          description: 'Welcome to the Lewis App',
+          status: 'success',
+        });
+      })
+      .catch((error) => {
+        newToast({
+          title: 'Login failed',
+          description: error.message,
+          status: 'error',
+        });
+      });
+  };
+
+  const onLogout = () => {
+    dispatch(logout());
+    auth.signOut();
+    newToast({
+      title: 'Logged out',
+      // description: '',
+      status: 'info',
+    });
+  };
 
   const showToast = (content: any, status: any) => {
-    toast({
+    newToast({
       title: 'You clicked here.',
       description: content,
       status,
-      duration: 9000,
-      isClosable: true,
-      position: 'bottom-right',
     });
-  };
-
-  const pushRouter = (renderQuery: any) => {
-    return router.push({
-      pathname: '/pexels',
-      query: {
-        ...router.query,
-        ...renderQuery,
-      },
-    });
-  };
-
-  const onSearch = (e: any) => {
-    if (e.key === 'Enter') {
-      pushRouter({
-        search: e.target.value,
-      });
-    }
   };
 
   return (
@@ -70,6 +100,7 @@ const NavigationBar: FC = () => {
       paddingBlock={1.5}
       paddingInline={4}
       borderBottomWidth={1}
+      h="48px"
       gap={4}
       as="header"
       position="fixed"
@@ -88,7 +119,7 @@ const NavigationBar: FC = () => {
           alt=""
         />
         <Text
-          fontWeight={500}
+          fontWeight={700}
           fontSize="16px"
           letterSpacing={1}
           paddingLeft={2}
@@ -96,23 +127,25 @@ const NavigationBar: FC = () => {
           {APP_NAME}
         </Text>
       </Center>
-      <Center>
-        <Button onClick={() => router.push('/pexels')} border="none" bg="none">
-          Wallpapers
-        </Button>
-      </Center>
-      <Center>
-        <InputGroup variant="filled">
-          <Input placeholder="Search Wallpapers..." onKeyDown={onSearch} />
-        </InputGroup>
+
+      <Center w="15vw">
+        <Select icon={<RepeatIcon />} value="Trending" fontWeight={500}>
+          <option value="Popular">Popular</option>
+          <option value="Hot">Hot</option>
+          <option value="Trending">Trending</option>
+        </Select>
       </Center>
       <Center flex={1}>
         <InputGroup variant="filled">
           <InputLeftAddon>
             <SearchIcon />
           </InputLeftAddon>
-          <Input placeholder="Search..." onKeyDown={onSearch} />
+          <Input placeholder="Search..." />
         </InputGroup>
+      </Center>
+
+      <Center>
+        <Button onClick={() => router.push('/pexels')}>Wallpapers</Button>
       </Center>
 
       <Center>
@@ -132,8 +165,8 @@ const NavigationBar: FC = () => {
       <Center>
         <IconButton
           aria-label=""
-          onClick={() => showToast('Emails', 'info')}
-          icon={<EmailIcon />}
+          onClick={() => router.push('/chat-room')}
+          icon={<ChatIcon />}
         />
       </Center>
       <Center>
@@ -144,19 +177,41 @@ const NavigationBar: FC = () => {
         />
       </Center>
       <Center>
-        <Button onClick={() => router.push('/')}>Blog</Button>
+        <Button
+          borderRadius="30px"
+          color="white"
+          bg="linear-gradient(67.9deg,#5349da 11.74%,#b44ac0 88.14%)"
+          _hover={{
+            bg: 'linear-gradient(67.9deg,#5349da 11.74%,#b44ac0 88.14%)',
+          }}
+          _active={{
+            bg: 'linear-gradient(67.9deg,#5349da 11.74%,#b44ac0 88.14%)',
+          }}
+        >
+          Shop Avatars
+        </Button>
       </Center>
-
       <Center>
         <Menu>
-          <MenuButton as={Button} borderWidth={0}>
+          <MenuButton
+            as={Button}
+            borderWidth={0}
+            bg="none"
+            _active={{
+              bg: 'none',
+            }}
+            _hover={{
+              bg: 'none',
+            }}
+          >
             <Flex alignItems="center">
+              {user && <Text paddingRight={3}>{user?.displayName}</Text>}
               <Avatar
                 boxSize="28px"
-                name="Lewis Nguyen"
-                src="https://bit.ly/dan-abramov"
+                name={user?.displayName}
+                src={user?.photoURL}
               >
-                <AvatarBadge bg="green" boxSize="0.75em" />
+                {user && <AvatarBadge bg="green" boxSize="0.75em" />}
               </Avatar>
             </Flex>
           </MenuButton>
@@ -165,14 +220,30 @@ const NavigationBar: FC = () => {
               isDarkMode ? 'componentBgColorDark' : 'componentBgColorLight'
             }
           >
-            <MenuItem>Download</MenuItem>
-            <MenuItem>Create a Copy</MenuItem>
-            <MenuItem>Mark as Draft</MenuItem>
-            <MenuItem>Delete</MenuItem>
-            <MenuItem>Attend a Workshop</MenuItem>
+            {!user ? (
+              <MenuItem fontWeight={500} onClick={signInWithGoogle}>
+                Login with Google
+              </MenuItem>
+            ) : (
+              <>
+                <MenuItem fontWeight={500} onClick={onUserProfileModalOpen}>
+                  Profile
+                </MenuItem>
+                <MenuItem fontWeight={500} onClick={onLogout}>
+                  Logout
+                </MenuItem>
+              </>
+            )}
           </MenuList>
         </Menu>
       </Center>
+
+      <UserProfileModal
+        onClose={onUserProfileModalClose}
+        isOpen={isUserProfileModalOpen}
+        user={user}
+        onLogout={onLogout}
+      />
     </Flex>
   );
 };

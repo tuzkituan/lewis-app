@@ -10,12 +10,14 @@ import styles from './styles'
 
 // Component style overrides
 import Button from './components/button'
+import Modal from './components/modal'
 
 const overrides = {
   styles,
   // Other foundational style overrides go here
   components: {
     Button,
+    Modal,
   },
 
   // color variables

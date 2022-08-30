@@ -1,8 +1,7 @@
-import LoadedImages from 'components/LoadedImages';
 import MainLayout from 'layouts/MainLayout';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { usePageLoading } from 'utils/loading';
+import LoadedImages from './components/LoadedImages';
 
 interface Props {
   data: {
@@ -10,14 +9,13 @@ interface Props {
   };
 }
 const Pexels: NextPage<Props> = ({ data }) => {
-  const { isPageLoading } = usePageLoading();
   return (
     <MainLayout>
       <Head>
         <title>Pexels</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <LoadedImages data={data} loading={isPageLoading} />
+      <LoadedImages data={data} />
     </MainLayout>
   );
 };

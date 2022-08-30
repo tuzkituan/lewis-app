@@ -12,13 +12,15 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { FC, useEffect } from 'react';
+import { saveImage } from 'utils/saveImage';
 
 interface Props {
   item: {
-    alt: '';
-    photographer: '';
+    id: string;
+    alt: string;
+    photographer: string;
     src: {
-      original: '';
+      original: string;
     };
   };
   onClose: () => void;
@@ -40,12 +42,8 @@ const ViewImageModal: FC<Props> = ({ item, onClose }) => {
 
   if (!item) return null;
   return (
-    <Modal isCentered isOpen={isOpen} onClose={handleClose}>
-      <ModalOverlay
-        bg="blackAlpha.300"
-        backdropFilter="auto"
-        backdropBlur="2px"
-      />
+    <Modal isCentered isOpen={isOpen} onClose={handleClose} size="xl">
+      <ModalOverlay />
       <ModalContent>
         <ModalHeader>{item.alt}</ModalHeader>
         <ModalCloseButton />
@@ -56,7 +54,14 @@ const ViewImageModal: FC<Props> = ({ item, onClose }) => {
           <Image marginTop={4} src={item.src?.original} alt={item.alt}></Image>
         </ModalBody>
         <ModalFooter gap={4}>
-          <Button colorScheme="red">Download</Button>
+          <Button
+            colorScheme="red"
+            onClick={() => {
+              saveImage(item.src?.original, item?.id);
+            }}
+          >
+            Download
+          </Button>
           <Button onClick={handleClose}>Close</Button>
         </ModalFooter>
       </ModalContent>

@@ -6,24 +6,20 @@ import {
   Flex,
   IconButton,
   Input,
-  Toast,
   useColorMode,
-  useToast,
 } from '@chakra-ui/react';
 import { FC } from 'react';
+import { useToastHook } from 'utils/notification';
 
 const CreatePost: FC = () => {
   const { colorMode } = useColorMode();
-  const toast = useToast();
+  const [toast, newToast] = useToastHook();
 
   const showToast = () => {
-    toast({
+    newToast({
       title: 'Hi.',
       description: "We've created a post for you.",
       status: 'success',
-      duration: 9000,
-      isClosable: true,
-      position: 'bottom-right',
     });
   };
 
