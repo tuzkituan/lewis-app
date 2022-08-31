@@ -15,14 +15,7 @@ import { FC, useEffect } from 'react';
 import { saveImage } from 'utils/saveImage';
 
 interface Props {
-  item: {
-    id: string;
-    alt: string;
-    photographer: string;
-    src: {
-      original: string;
-    };
-  };
+  item: any;
   onClose: () => void;
 }
 

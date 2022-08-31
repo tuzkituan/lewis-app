@@ -1,23 +1,23 @@
-import { useToast } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useToast } from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
 
 export const useToastHook = () => {
-  const [state, setState] = useState(null);
+  const [state, setState] = useState<any>();
+
   const toast = useToast();
 
   useEffect(() => {
     if (state) {
-      const { description, title, status } = state;
       toast({
-        title: title,
-        description: description,
-        status: status,
+        title: state?.title,
+        description: state?.description,
+        status: state?.status || 'info',
         duration: 5000,
-        position: "bottom-right",
+        position: 'bottom-right',
         isClosable: true,
       });
     }
   }, [state, toast]);
 
   return [state, setState];
-}
+};
