@@ -1,6 +1,8 @@
+A Reddit UI Clone
 
 ```
-
-Reddit UI Clone with Google Login via Firebase, search wallpapers by Pexels API
-
+- NextJS + Ts
+- Chakra UI
+- Pexels API (search images)
+- Google Login with Firebase
 ```
